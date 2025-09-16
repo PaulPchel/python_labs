@@ -1,1 +1,28 @@
-# ЛР1
+# Лабораторная работа 1
+## Задание 1
+
+![Первое задание](images/lab01/01_greeting.png)
+
+## Задание 2
+
+![Второе задание](images/lab01/02_sum_avg.png)
+
+## Задание 3
+
+![Третье задание](images/lab01/03_discount_vat.png)
+
+## Задание 4
+
+![Четвёртое задание](images/lab01/04_minutes_to_hhmm.png)
+
+## Задание 5
+
+![Пятое задание](images/lab01/05_initials_and_len.png)
+
+## Задание 6
+
+![Шестое задание](images/lab01/ex06.png)
+
+## Задание 7
+
+![Седьмое задание](images/lab01/ex07.png)
