@@ -125,6 +125,7 @@ print(result)
 # Лабораторная работа 2
 ## Задание 1
 
+### arrays(min_max)
 ![Первое задание; Первая функция](images/lab02/arrays(min_max).png)
 
 ```
