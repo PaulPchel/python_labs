@@ -145,6 +145,7 @@ def min_max(nums: List[float|int]) -> Tuple[float|int, float|int]:
     return min_val, max_val
 ```
 
+### arrays(unique_sorted)
 ![Первое задание; Вторая функция](images/lab02/arrays(unique_sorted).png)
 
 ```
@@ -162,6 +163,7 @@ def unique_sorted(nums: List[float | int]) -> List[float | int]:
     return unique
 ```
 
+### arrays(flatten)
 ![Первое задание; Третья функция](images/lab02/arrays(flatten).png)
 
 ```
@@ -179,6 +181,7 @@ def flatten(mat: List[list | tuple]) -> List:
 
 ## Задание B
 
+### matrix(transpose)
 ![Задание B; Первая функция](images/lab02/matrix(transpose).png)
 
 ```
@@ -195,6 +198,7 @@ def transpose(mat: List[List[float|int]]) -> List[List]:
     return [list(col) for col in zip(*mat)]
 ```
 
+### matrix(row_sums)
 ![Задание B; Вторая функция](images/lab02/matrix(row_sums).png)
 
 ```
@@ -211,6 +215,7 @@ def row_sums(mat: List[List[float|int]]) -> List[float]:
     return [sum(row) for row in mat]
 ```
 
+### matrix(col_sums)
 ![Задание B; Третья функция](images/lab02/matrix(col_sums).png)
 
 ```
