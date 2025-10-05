@@ -3,7 +3,7 @@ from typing import List
 def flatten(mat: List[list | tuple]) -> List:
     result: List = []
     for row in mat:
-        if not isinstance(row, (list, tuple)):
+        if not isinstance(row, (tuple,list)):
             return ('TypeError')
         for elem in row:
             result.append(elem)
