@@ -254,3 +254,110 @@ def format_record(rec: tuple[str, str, float]) -> str:
 ```
 
 
+# Лабораторная работа 3
+## Задание A
+
+### normalize
+![Первое задание; Первая функция](images/lab03/text(normalize).png)
+
+```
+import re
+
+def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
+    text = re.sub(r'[\r\n\t\f\v]', ' ', text)
+
+    if yo2e:
+        text = text.replace('ё', 'е').replace('Ё', 'Е')
+
+    if casefold:
+        text = text.casefold()
+
+    text = re.sub(r'\s+', ' ', text).strip()
+
+    return text
+
+print(normalize('ПрИвЕт\nМИр\t'))
+print(normalize('ёжик, Ёлка'))
+print(normalize('Hello\r\nWorld'))
+print(normalize('  двойные   пробелы  '))
+```
+
+### tokenize
+![Первое задание; Вторая функция](images/lab03/text(tokenize).png)
+
+```
+import re
+
+def tokenize(text: str) -> list[str]:
+    return re.findall(r'\w+(?:-\w+)*', text, flags=re.UNICODE)
+
+print(tokenize('привет мир'))
+print(tokenize('hello,world!!!'))
+print(tokenize('по-настоящему круто'))
+print(tokenize('2025 год'))
+print(tokenize('emoji 😀 не слово'))
+```
+
+### count_freq
+![Первое задание; Третья функция](images/lab03/text(count_freq).png)
+
+```
+def count_freq(tokens: list[str]) -> dict[str, int]:
+    freq: dict[str, int] = {}
+    for token in tokens:
+        freq[token] = freq.get(token, 0) + 1
+
+    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+
+    return dict(sorted_items)
+
+print(count_freq(['a', 'b', 'a', 'c', 'b', 'a']))
+print(count_freq(['bb', 'aa', 'bb', 'aa', 'cc']))
+```
+
+### top_n
+![Первое задание; Четвёртая функция](images/lab03/text(top_n).png)
+
+```
+def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
+    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+    return sorted_items[:n]
+
+freq1 = {'a': 3, 'b': 2, 'c': 1}
+print(top_n(freq1, n=2))
+
+freq2 = {'bb': 2, 'aa': 2, 'cc': 1}
+print(top_n(freq2, n=2))
+```
+
+## Задание B
+
+### text_stats
+![Задание B](images/lab03/text_stats.png)
+
+```
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from lib.text import normalize, tokenize, count_freq, top_n
+
+def main() -> None:
+    text = sys.stdin.read().strip()
+
+    norm = normalize(text)
+    tokens = tokenize(norm)
+    freq = count_freq(tokens)
+
+    print(f"Всего слов: {len(tokens)}")
+    print(f"Уникальных слов: {len(freq)}")
+    print("Топ-5:")
+    for word, count in top_n(freq, 5):
+        print(f"{word}:{count}")
+
+if __name__ == "__main__":
+    main()
+```
+
+
