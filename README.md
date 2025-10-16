@@ -358,6 +358,125 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+"""
+1. Сначала вставляешь в терминал  python3 src/lab03/text_stats.py
+2. Затем втсавляешь текст, то есть Привет, мир! Привет!!!
+3. Потом клавишами CTRL+D
+"""
 ```
 
 
+# Лабораторная работа 4
+## Задание A
+
+### io_txt_csv
+
+```
+from pathlib import Path
+import csv
+
+
+def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+    """
+    Прочитать текстовый файл и вернуть его содержимое как одну строку.
+
+    Исключения:
+        FileNotFoundError: если файл не найден.
+        UnicodeDecodeError: если содержимое не может быть декодировано указанной кодировкой.
+    """
+    path = Path(path)
+    with path.open("r", encoding=encoding) as f:
+        return f.read()
+
+
+def write_csv(
+    rows: list[tuple | list],
+    path: str | Path,
+    header: tuple[str, ...] | None = None
+) -> None:
+    """
+    Создать или перезаписать CSV-файл с разделителем запятая (,).
+
+    Исключения:
+        ValueError: если строки в `rows` имеют разную длину.
+    """
+    if not rows:
+        with Path(path).open("w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            if header:
+                writer.writerow(header)
+        return
+
+    expected_len = len(rows[0])
+    if any(len(row) != expected_len for row in rows):
+        raise ValueError("Все строки должны иметь одинаковую длину")
+
+    path = Path(path)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        if header:
+            writer.writerow(header)
+        writer.writerows(rows)
+```
+
+## Задание B
+
+### text_report
+![Задание B](images/lab04/text_report.png)
+
+```
+import sys
+import argparse
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from lib.text import normalize, tokenize, count_freq, top_n
+from lab04.io_txt_csv import read_text, write_csv
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Генерация отчёта по частоте слов в тексте.")
+    parser.add_argument(
+        "--in", dest="input_path", default="data/lab04/input.txt",
+        help="путь к входному файлу (по умолчанию: data/lab04/input.txt)"
+    )
+    parser.add_argument(
+        "--out", dest="output_path", default="data/lab04/report.csv",
+        help="путь к выходному CSV (по умолчанию: data/lab04/report.csv)"
+    )
+    args = parser.parse_args()
+
+    input_path = Path(args.input_path)
+    output_path = Path(args.output_path)
+
+    text = read_text(input_path)
+    norm = normalize(text)
+    tokens = tokenize(norm)
+    freq = count_freq(tokens)
+
+    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+    rows = [(word, count) for word, count in sorted_items]
+
+    write_csv(rows, output_path, header=("word", "count"))
+
+    total_words = len(tokens)
+    unique_words = len(freq)
+    top5 = top_n(freq, 5)
+
+    print(f"Всего слов: {total_words}")
+    print(f"Уникальных слов: {unique_words}")
+    print("Топ-5:")
+    for word, count in top5:
+        print(f"{word}: {count}")
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+Для запуска:
+python3 src/lab04/text_report.py --in /Users/paulpchelintsev/Desktop/python_labs/data/lab04/input.txt
+"""
+```
