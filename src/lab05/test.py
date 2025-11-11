@@ -48,7 +48,7 @@ except Exception as e:
 
 
 """
-Для запуска по очереди вставляешь в терминал:
+Для запуска по очереди вставляем в терминал:
 cd ~/Desktop/python_labs
 export PYTHONPATH=$PWD/src
 python3 -m lab05.test
