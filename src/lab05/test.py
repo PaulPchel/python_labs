@@ -4,8 +4,8 @@ from lab05.csv_xlsx import csv_to_xlsx
 from lab05.json_csv import json_to_csv, csv_to_json
 
 base = Path(__file__).resolve().parents[2]
-samples = base / "data" / "samples"
-out = base / "data" / "out"
+samples = base / "data" / "lab05" / "samples"
+out = base / "data" / "lab05" / "out"
 
 # №1
 print("Пример 1: CSV → XLSX")
