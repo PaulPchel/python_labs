@@ -19,12 +19,10 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
 
     fieldnames = list(data[0].keys())
 
-    # Только создаём файл, если его ещё нет
-    if not csv_file.exists():
-        with csv_file.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(data)
+    with csv_file.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(data)
 
 
 def csv_to_json(csv_path: str, json_path: str) -> None:
@@ -42,7 +40,6 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     if not reader:
         raise ValueError("Пустой CSV или отсутствует заголовок")
 
-    if not json_file.exists():
-        with json_file.open("w", encoding="utf-8") as f:
-            json.dump(reader, f, ensure_ascii=False, indent=2)
+    with json_file.open("w", encoding="utf-8") as f:
+        json.dump(reader, f, ensure_ascii=False, indent=2)
 

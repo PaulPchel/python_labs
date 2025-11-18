@@ -1,4 +1,6 @@
-city,population,country,area_km2
-Москва,12678000,Россия,2561
-Санкт-Петербург,5398000,Россия,1439
-Новосибирск,1625000,Россия,505
+city,country,population
+SPB,Russia,5384342
+Moscow,Russia,13010112
+Kazan,Russia,1306953
+Novosibirsk,Russia,1620162
+Yekaterinburg,Russia,1493749
