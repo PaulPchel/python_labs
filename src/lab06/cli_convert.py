@@ -4,6 +4,7 @@ import sys
 from src.lab05.json_csv import json_to_csv, csv_to_json
 from src.lab05.csv_xlsx import csv_to_xlsx
 
+
 def run_json2csv(input_file: str, output_file: str):
     try:
         json_to_csv(input_file, output_file)
@@ -11,6 +12,7 @@ def run_json2csv(input_file: str, output_file: str):
     except Exception as e:
         print(f"Ошибка: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def run_csv2json(input_file: str, output_file: str):
     try:
@@ -20,6 +22,7 @@ def run_csv2json(input_file: str, output_file: str):
         print(f"Ошибка: {e}", file=sys.stderr)
         sys.exit(1)
 
+
 def run_csv2xlsx(input_file: str, output_file: str):
     try:
         csv_to_xlsx(input_file, output_file)
@@ -27,6 +30,7 @@ def run_csv2xlsx(input_file: str, output_file: str):
     except Exception as e:
         print(f"Ошибка: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Конвертеры данных CSV/JSON/XLSX")
@@ -53,7 +57,6 @@ def main():
     elif args.command == "csv2xlsx":
         run_csv2xlsx(args.input, args.output)
 
+
 if __name__ == "__main__":
     main()
-
-

@@ -9,14 +9,20 @@ from lab04.io_txt_csv import read_text, write_csv
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Генерация отчёта по частоте слов в тексте.")
-    parser.add_argument(
-        "--in", dest="input_path", default="data/lab04/input.txt",
-        help="путь к входному файлу (по умолчанию: data/lab04/input.txt)"
+    parser = argparse.ArgumentParser(
+        description="Генерация отчёта по частоте слов в тексте."
     )
     parser.add_argument(
-        "--out", dest="output_path", default="data/lab04/report.csv",
-        help="путь к выходному CSV (по умолчанию: data/lab04/report.csv)"
+        "--in",
+        dest="input_path",
+        default="data/lab04/input.txt",
+        help="путь к входному файлу (по умолчанию: data/lab04/input.txt)",
+    )
+    parser.add_argument(
+        "--out",
+        dest="output_path",
+        default="data/lab04/report.csv",
+        help="путь к выходному CSV (по умолчанию: data/lab04/report.csv)",
     )
     args = parser.parse_args()
 

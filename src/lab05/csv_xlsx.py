@@ -2,6 +2,7 @@ from pathlib import Path
 import csv
 from openpyxl import Workbook
 
+
 def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     csv_file = Path(csv_path)
     xlsx_file = Path(xlsx_path)
@@ -19,11 +20,8 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
         for row in csv.reader(f):
             ws.append(row)
 
-
     for column_cells in ws.columns:
         length = max(len(str(cell.value)) for cell in column_cells)
         ws.column_dimensions[column_cells[0].column_letter].width = max(length, 8)
 
     wb.save(xlsx_file)
-
-

@@ -53,4 +53,3 @@ cd ~/Desktop/python_labs
 export PYTHONPATH=$PWD/src
 python3 -m lab05.test
 """
-

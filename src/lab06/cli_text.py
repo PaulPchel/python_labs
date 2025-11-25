@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 from src.lib.text import normalize, tokenize, count_freq, top_n
 
+
 def cmd_cat(file_path: str, number_lines: bool):
     path = Path(file_path)
     if not path.exists():
@@ -15,6 +16,7 @@ def cmd_cat(file_path: str, number_lines: bool):
                 print(f"{i}: {line.rstrip()}")
             else:
                 print(line.rstrip())
+
 
 def cmd_stats(file_path: str, top_count: int):
     path = Path(file_path)
@@ -35,6 +37,7 @@ def cmd_stats(file_path: str, top_count: int):
     for word, count in top_n(freq, top_count):
         print(f"{word}: {count}")
 
+
 def main():
     parser = argparse.ArgumentParser(description="CLI-утилиты для работы с текстом")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -54,8 +57,6 @@ def main():
     elif args.command == "stats":
         cmd_stats(args.input, args.top)
 
+
 if __name__ == "__main__":
     main()
-
-
-

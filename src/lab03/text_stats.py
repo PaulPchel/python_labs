@@ -1,9 +1,10 @@
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from lib.text import normalize, tokenize, count_freq, top_n
+
 
 def main() -> None:
     text = sys.stdin.read().strip()
@@ -18,6 +19,7 @@ def main() -> None:
     for word, count in top_n(freq, 5):
         print(f"{word}:{count}")
 
+
 if __name__ == "__main__":
     main()
 
@@ -26,5 +28,3 @@ if __name__ == "__main__":
 2. Затем втсавляешь текст, то есть Привет, мир! Привет!!!
 3. Потом клавишами CTRL+D
 """
-
-

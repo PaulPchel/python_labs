@@ -2,6 +2,7 @@ import json
 import csv
 from pathlib import Path
 
+
 def json_to_csv(json_path: str, csv_path: str) -> None:
     json_file = Path(json_path)
     csv_file = Path(csv_path)
@@ -14,7 +15,11 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
     with json_file.open(encoding="utf-8") as f:
         data = json.load(f)
 
-    if not data or not isinstance(data, list) or not all(isinstance(x, dict) for x in data):
+    if (
+        not data
+        or not isinstance(data, list)
+        or not all(isinstance(x, dict) for x in data)
+    ):
         raise ValueError("Пустой JSON или неподдерживаемая структура")
 
     fieldnames = list(data[0].keys())
@@ -42,4 +47,3 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
 
     with json_file.open("w", encoding="utf-8") as f:
         json.dump(reader, f, ensure_ascii=False, indent=2)
-

@@ -16,9 +16,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 
 
 def write_csv(
-    rows: list[tuple | list],
-    path: str | Path,
-    header: tuple[str, ...] | None = None
+    rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None
 ) -> None:
     """
     Создать или перезаписать CSV-файл с разделителем запятая (,).
