@@ -1,12 +1,11 @@
-[tool.black]
-line-length = 88
-target-version = ["py311"]
-skip-string-normalization = false
+[project]
+name = "python_labs"
+version = "3.13.7"
+description = "labs project"
+requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
-addopts = "-q"
-
-[tool.coverage.run]
-source = ["src"]
-branch = true
+pythonpath = ["."]
+testpaths = [
+    "tests"
+]

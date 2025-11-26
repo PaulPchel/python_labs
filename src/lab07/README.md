@@ -180,5 +180,5 @@ def test_csv_to_json_empty_csv(tmp_path):
 ![Тест ](images/lab07/tests.png)
 
 ```
-PYTHONPATH=$(pwd)/src pytest -v tests
+pytest --cov=src --cov-report=term-missing
 ```
