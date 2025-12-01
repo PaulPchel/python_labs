@@ -994,8 +994,106 @@ def test_csv_to_json_empty_csv(tmp_path):
 ```
 
 ## Тесты
-![Тест ](images/lab07/tests.png)
+![Тест](images/lab07/tests.png)
 
 ```
 pytest --cov=src --cov-report=term-missing
 ```
+
+
+# Лабораторная работа 8
+## models
+
+```
+from dataclasses import dataclass
+from datetime import datetime, date
+
+
+@dataclass
+class Student:
+    fio: str
+    birthdate: str
+    group: str
+    gpa: float
+
+    def __post_init__(self):
+        try:
+            datetime.strptime(self.birthdate, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("birthdate must be in format YYYY-MM-DD")
+
+        if not (0 <= self.gpa <= 5):
+            raise ValueError("gpa must be between 0 and 5")
+
+    def age(self) -> int:
+        b = datetime.strptime(self.birthdate, "%Y-%m-%d").date()
+        today = date.today()
+        years = today.year - b.year
+        if (today.month, today.day) < (b.month, b.day):
+            years -= 1
+        return years
+
+    def to_dict(self) -> dict:
+        return {
+            "fio": self.fio,
+            "birthdate": self.birthdate,
+            "group": self.group,
+            "gpa": self.gpa
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        return cls(
+            fio=d["fio"],
+            birthdate=d["birthdate"],
+            group=d["group"],
+            gpa=d["gpa"]
+        )
+
+    def __str__(self):
+        return f"{self.fio} ({self.group}), GPA: {self.gpa}, age: {self.age()}"
+
+```
+
+## serialize
+
+```
+import json
+from .models import Student
+from pathlib import Path
+
+
+def students_to_json(students: list[Student], path):
+    path = Path(path)
+    data = [s.to_dict() for s in students]
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def students_from_json(path) -> list[Student]:
+    path = Path(path)
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    return [Student.from_dict(x) for x in raw]
+```
+
+## Тесты
+![Тест](images/lab08/result.png)
+
+```
+from src.lab08.models import Student
+from src.lab08.serialize import students_to_json, students_from_json
+
+students = students_from_json("data/lab08/students_input.json")
+students_to_json(students, "data/lab08/students_output.json")
+
+for s in students:
+    print(s)
+
+
+"""
+python3 -m src.lab08.test
+"""
+```
+
+### students_output.json
+
+![Тест](images/lab08/json_result.png)
