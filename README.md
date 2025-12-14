@@ -1269,3 +1269,265 @@ fio,birthdate,group,gpa
 Иванов Иван,2003-10-10,SE-01,4.5
 Сидоров Сидор,2003-07-15,SE-02,4.9
 ```
+
+
+# Лабораторная работа 9
+## structures
+
+```
+from collections import deque
+
+
+class Stack:
+    def __init__(self):
+        self._data = []
+
+    def push(self, item):
+        self._data.append(item)
+
+    def pop(self):
+        if not self._data:
+            raise IndexError("pop from empty stack")
+        return self._data.pop()
+
+    def peek(self):
+        if not self._data:
+            return None
+        return self._data[-1]
+
+    def is_empty(self) -> bool:
+        return not self._data
+
+    def __len__(self):
+        return len(self._data)
+
+
+class Queue:
+    def __init__(self):
+        self._data = deque()
+
+    def enqueue(self, item):
+        self._data.append(item)
+
+    def dequeue(self):
+        if not self._data:
+            raise IndexError("dequeue from empty queue")
+        return self._data.popleft()
+
+    def peek(self):
+        if not self._data:
+            return None
+        return self._data[0]
+
+    def is_empty(self) -> bool:
+        return not self._data
+
+    def __len__(self):
+        return len(self._data)
+```
+
+## linked_list
+
+```
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self._size = 0
+
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self._size += 1
+
+    def prepend(self, value):
+        new_node = Node(value, self.head)
+        self.head = new_node
+        if self._size == 0:
+            self.tail = new_node
+        self._size += 1
+
+    def insert(self, idx, value):
+        if idx < 0 or idx > self._size:
+            raise IndexError("index out of range")
+
+        if idx == 0:
+            self.prepend(value)
+            return
+
+        if idx == self._size:
+            self.append(value)
+            return
+
+        current = self.head
+        for _ in range(idx - 1):
+            current = current.next
+
+        new_node = Node(value, current.next)
+        current.next = new_node
+        self._size += 1
+
+    def remove_at(self, idx):
+        if idx < 0 or idx >= self._size:
+            raise IndexError("index out of range")
+
+        if idx == 0:
+            self.head = self.head.next
+            if self._size == 1:
+                self.tail = None
+        else:
+            current = self.head
+            for _ in range(idx - 1):
+                current = current.next
+            current.next = current.next.next
+            if idx == self._size - 1:
+                self.tail = current
+
+        self._size -= 1
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next
+
+    def __len__(self):
+        return self._size
+
+    def __repr__(self):
+        return f"SinglyLinkedList([{', '.join(map(str, self))}])"
+
+    def pretty(self):
+        current = self.head
+        result = []
+        while current:
+            result.append(f"[{current.value}]")
+            current = current.next
+        return " -> ".join(result) + " -> None"
+```
+
+## Тесты
+###test_linked_list
+![Тест](images/lab10/test_linked_list.png)
+
+```
+from src.lab10.linked_list import SinglyLinkedList
+
+
+def test_linked_list():
+    print("=== SinglyLinkedList test ===")
+    lst = SinglyLinkedList()
+
+    assert len(lst) == 0
+
+    lst.append(1)
+    lst.append(2)
+    lst.append(3)
+    assert list(lst) == [1, 2, 3]
+
+    lst.prepend(0)
+    assert list(lst) == [0, 1, 2, 3]
+
+    lst.insert(2, 99)
+    assert list(lst) == [0, 1, 99, 2, 3]
+
+    lst.remove_at(2)
+    assert list(lst) == [0, 1, 2, 3]
+
+    lst.remove_at(0)
+    assert list(lst) == [1, 2, 3]
+
+    lst.remove_at(len(lst) - 1)
+    assert list(lst) == [1, 2]
+
+    try:
+        lst.remove_at(10)
+    except IndexError as e:
+        print("OK:", e)
+
+    print("List content:", lst)
+    print("Pretty view:", lst.pretty())
+    print("LinkedList tests passed\n")
+
+
+if __name__ == "__main__":
+    test_linked_list()
+
+"""
+python3 -m src.lab10.test_linked_list
+"""
+```
+
+###test_structures
+![Тест](images/lab10/test_structures.png)
+
+```
+from src.lab10.structures import Stack, Queue
+
+
+def test_stack():
+    print("=== Stack test ===")
+    s = Stack()
+
+    assert s.is_empty()
+    s.push(1)
+    s.push(2)
+    s.push(3)
+
+    assert len(s) == 3
+    assert s.peek() == 3
+    assert s.pop() == 3
+    assert s.pop() == 2
+    assert s.pop() == 1
+    assert s.is_empty()
+
+    try:
+        s.pop()
+    except IndexError as e:
+        print("OK:", e)
+
+    print("Stack tests passed\n")
+
+
+def test_queue():
+    print("=== Queue test ===")
+    q = Queue()
+
+    assert q.is_empty()
+    q.enqueue(10)
+    q.enqueue(20)
+    q.enqueue(30)
+
+    assert len(q) == 3
+    assert q.peek() == 10
+    assert q.dequeue() == 10
+    assert q.dequeue() == 20
+    assert q.dequeue() == 30
+    assert q.is_empty()
+
+    try:
+        q.dequeue()
+    except IndexError as e:
+        print("OK:", e)
+
+    print("Queue tests passed\n")
+
+
+if __name__ == "__main__":
+    test_stack()
+    test_queue()
+
+"""
+python3 -m src.lab10.test_structures
+"""
+```
